@@ -3,6 +3,7 @@ package jpabook.jpashop.service;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -51,8 +52,9 @@ class MemberServiceTest {
 
         //when
         memberService.join(member1);
+        Executable executable = () -> memberService.join(member2);
 
         //then
-        assertThrows(IllegalStateException.class, () -> memberService.join(member2));
+        assertThrows(IllegalStateException.class, executable, "이미 등록된 이름이 있을 경우 예외가 발생해야 한다.");
     }
 }
